@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OrceiPdf.Repository.Repository;
 using OrceiPdf.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace OrceiPdf.Web
             var host = CreateHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope()) {
-                var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                var db = scope.ServiceProvider.GetService<OrceiPdfDbContext>();
                 db.Database.Migrate();
             }
 

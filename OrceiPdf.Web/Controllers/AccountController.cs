@@ -1,19 +1,17 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using OrceiPdf.Domain.Models;
 using OrceiPdf.Web.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OrceiPdf.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-        public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
+        public AccountController(UserManager<User> userManager,
+            SignInManager<User> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -56,7 +54,7 @@ namespace OrceiPdf.Web.Controllers
         {
             if (ModelState.IsValid) {
 
-                var user = new ApplicationUser {
+                var user = new User {
                     UserName = model.Email,
                     Email = model.Email
                 };

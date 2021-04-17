@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OrceiPdf.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OrceiPdf.Web.Models
+namespace OrceiPdf.Repository.Repository
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class OrceiPdfDbContext : IdentityDbContext<User, Roles, Guid>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public OrceiPdfDbContext(DbContextOptions<OrceiPdfDbContext> options)
             : base(options)
         {
         }

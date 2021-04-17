@@ -20,4 +20,13 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Domain\" />
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrceiPdf.Repository\OrceiPdf.Repository.csproj" />
+  </ItemGroup>
+
 </Project>
