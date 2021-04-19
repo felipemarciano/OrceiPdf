@@ -13,8 +13,8 @@ namespace OrceiPdf.Domain.Interfaces
         Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate);
 
         Task Add(T entity);
-        Task Update(T entity);
-        Task Remove(T entity);
+        void Update(T entity);
+        void Remove(T entity);
 
         Task<IEnumerable<T>> GetAll();
         Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate);

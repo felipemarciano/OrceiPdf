@@ -31,19 +31,16 @@ namespace OrceiPdf.Repository.Repository
         public async Task Add(T entity)
         {
             await Context.Set<T>().AddAsync(entity);
-            await Context.SaveChangesAsync();
         }
 
-        public Task Update(T entity)
+        public void Update(T entity)
         {
-            Context.Entry(entity).State = EntityState.Modified;
-            return Context.SaveChangesAsync();
+            Context.Set<T>().Update(entity);
         }
 
-        public Task Remove(T entity)
+        public void Remove(T entity)
         {
             Context.Set<T>().Remove(entity);
-            return Context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<T>> GetAll()
