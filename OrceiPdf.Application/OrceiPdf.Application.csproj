@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <ProjectReference Include="..\OrceiPdf.Domain\OrceiPdf.Domain.csproj" />
   </ItemGroup>
 
 </Project>

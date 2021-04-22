@@ -9,7 +9,7 @@ namespace OrceiPdf.Domain.Interfaces
 {
     public interface IAsyncRepository<T> where T : class
     {
-        ValueTask<T> GetById(int id);
+        ValueTask<T> GetById(Guid id);
         Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate);
 
         Task Add(T entity);

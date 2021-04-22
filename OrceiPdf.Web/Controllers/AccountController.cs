@@ -55,8 +55,8 @@ namespace OrceiPdf.Web.Controllers
             if (ModelState.IsValid) {
 
                 var user = new User {
-                    UserName = model.Email,
-                    Email = model.Email
+                    UserName = model.UserName,
+                    Email = model.Email                    
                 };
 
                 var result = await userManager.CreateAsync(user, model.Password);

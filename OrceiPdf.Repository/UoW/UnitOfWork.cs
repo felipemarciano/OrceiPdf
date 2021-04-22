@@ -16,12 +16,12 @@ namespace OrceiPdf.Repository.UoW
             _context = context;
         }
 
-        public async Task<int> CompleteAsync()
+        public async Task<int> CommitAsync()
         {
             return await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task<int> CompleteAsync(CancellationToken cancellationToken)
+        public async Task<int> CommitAsync(CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }

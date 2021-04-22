@@ -3,11 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OrceiPdf.Web.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using OrceiPdf.Repository.Repository;
-using OrceiPdf.Domain.Models;
 using OrceiPdf.Web.Configurations;
 
 namespace OrceiPdf.Web
@@ -25,6 +20,7 @@ namespace OrceiPdf.Web
         {
             services.AddDatabaseSetup(Configuration);
             services.AddAuthenticationSetup(Configuration);
+            services.AddDependencyInjectionSetup();
 
             services.AddControllersWithViews();
         }

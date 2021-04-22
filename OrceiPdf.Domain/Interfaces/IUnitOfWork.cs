@@ -9,9 +9,8 @@ namespace OrceiPdf.Domain.Interfaces
 {
     public interface IUnitOfWork
     {
-        Task<int> CompleteAsync();
+        Task<int> CommitAsync();
 
-        Task<int> CompleteAsync(CancellationToken cancellationToken);
+        Task<int> CommitAsync(CancellationToken cancellationToken);
     }
-
 }

@@ -12,9 +12,9 @@ namespace OrceiPdf.Repository.Repository
     public class OrceiPdfDbContext : IdentityDbContext<User, Roles, Guid>
     {
         public OrceiPdfDbContext(DbContextOptions<OrceiPdfDbContext> options)
-            : base(options)
-        {
-        }
+            : base(options) { }
+
+        public DbSet<Empresa> Empresas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

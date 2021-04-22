@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
@@ -22,10 +23,10 @@
 
   <ItemGroup>
     <Folder Include="Domain\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OrceiPdf.IoC\OrceiPdf.IoC.csproj" />
     <ProjectReference Include="..\OrceiPdf.Repository\OrceiPdf.Repository.csproj" />
   </ItemGroup>
 

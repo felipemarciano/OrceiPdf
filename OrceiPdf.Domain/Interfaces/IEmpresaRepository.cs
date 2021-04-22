@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using OrceiPdf.Domain.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace OrceiPdf.Domain.Interfaces
 {
-    public interface IEmpresaRepository
+    public interface IEmpresaRepository : IAsyncRepository<Empresa>
     {
+        Task<Empresa> GetbyUserId(Guid userId);
     }
 }

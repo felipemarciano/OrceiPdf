@@ -20,7 +20,7 @@ namespace OrceiPdf.Repository.Repository
             Context = context;
         }
 
-        public ValueTask<T> GetById(int id)
+        public ValueTask<T> GetById(Guid id)
         {
             return Context.Set<T>().FindAsync(id);
         }

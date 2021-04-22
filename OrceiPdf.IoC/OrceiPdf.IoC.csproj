@@ -8,4 +8,10 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OrceiPdf.Application\OrceiPdf.Application.csproj" />
+    <ProjectReference Include="..\OrceiPdf.Domain\OrceiPdf.Domain.csproj" />
+    <ProjectReference Include="..\OrceiPdf.Repository\OrceiPdf.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

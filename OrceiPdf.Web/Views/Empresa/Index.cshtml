@@ -1,0 +1,102 @@
+﻿@model EmpresaViewModel
+
+@{
+    ViewData["Title"] = "Minha Empresa";
+}
+
+@if (Model.Id == Guid.Empty)
+{
+    <h3>Registrar Empresa</h3>
+}
+else
+{
+    <h3>Editar Empresa</h3>
+}
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" id="form-crud" class="p-2">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserId" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label class="font-weight-bold" asp-for="NomeFantasia"></label><span class="text-danger">*</span>
+                <input asp-for="NomeFantasia" class="form-control" />
+                <span asp-validation-for="NomeFantasia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-bold" asp-for="RazaoSocial"></label><span class="text-danger">*</span>
+                <input asp-for="RazaoSocial" class="form-control" />
+                <span asp-validation-for="RazaoSocial" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-bold" asp-for="Endereco"></label><span class="text-danger">*</span>
+                <input asp-for="Endereco" class="form-control" />
+                <span asp-validation-for="Endereco" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-bold" asp-for="Telefone"></label>
+                <input asp-for="Telefone" class="form-control" />
+                <span asp-validation-for="Telefone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-bold" asp-for="Celular"></label><span class="text-danger">*</span>
+                <input asp-for="Celular" class="form-control" />
+                <span asp-validation-for="Celular" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-bold" asp-for="Cnpj"></label><span class="text-danger">*</span>
+                <input asp-for="Cnpj" class="form-control" />
+                <span asp-validation-for="Cnpj" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+        </form>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ModalCrud")
+
+<script>
+    $(document).ready(function () {
+
+        $('#Telefone').mask('(00) 0000-0000');
+        $('#Celular').mask('(00) 00000-0000');
+        $('#Cnpj').mask('00.000.000/0000-00');
+        console.log();
+
+
+
+        $.validator.addMethod("telefone", function (value, element) {
+            if (value)
+                return /\d{4,5}\-\d{4}/i.test(value);
+            else
+                return true;
+        }, "Informe um numero válido");
+
+        $("#form-crud").validate({
+            rules: {
+                NomeFantasia: {
+                    required: true
+                },
+                RazaoSocial: {
+                    required: true
+                },
+                Endereco: {
+                    required: true
+                },
+                Telefone: {
+                    required: false,
+                    telefone: true
+                },
+                Celular: {
+                    required: true,
+                    telefone: true
+                },
+                Cnpj: {
+                    required: true,
+                    cnpjBR: true
+                }
+            }
+        });
+    });
+</script>
