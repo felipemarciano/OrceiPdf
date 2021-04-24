@@ -29,7 +29,7 @@ namespace OrceiPdf.Web.Controllers
 
             if (orcamento is null) {
                 orcamento = new() {
-                    UserId = Guid.Parse(User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier).Value)
+                    EmpresaId = Guid.Parse(User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier).Value)
                 };
             }
 
@@ -74,8 +74,7 @@ namespace OrceiPdf.Web.Controllers
                 aaData = retorno.List.Select(x => new[]
                 {
                     x.Id.ToString(),
-                    x.Descricao,
-                    x.ValorUnitario.ToString()
+                    x.Numero.ToString()
                 }).ToList()
             });
         }
