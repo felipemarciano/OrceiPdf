@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="OrceiPdf.Domain.Models.BaseEntity">
+    <Position X="8.5" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Models\BaseEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OrceiPdf.Domain.Models.Cliente">
+    <Position X="10" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAABIQAAgCAAAAAAAAEAAAgAEAAAAAAAAAAAAAgAEAA=</HashCode>
+      <FileName>Models\Cliente.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OrceiPdf.Domain.Models.Empresa">
+    <Position X="16" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAABIQAAgCAAAAAAAAEAAAgAEAAAAAAAAAAAAAgAEAA=</HashCode>
+      <FileName>Models\Empresa.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OrceiPdf.Domain.Models.User">
+    <Position X="2" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Empresas" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Identity.IdentityUser&lt;TKey&gt;">
+    <Position X="1.5" Y="7" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="OrceiPdf.Domain.Models.Produto">
+    <Position X="13" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAQBAAAAAAAAAAgAAAAAgAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Produto.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="OrcamentoItens" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="OrceiPdf.Domain.Models.Orcamento">
+    <Position X="3.25" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAEAAAAAAAAAAAAAQAAAAAAgAACAAAAAAABAgA=</HashCode>
+      <FileName>Models\Orcamento.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Status" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="OrcamentoItens" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="OrceiPdf.Domain.Models.OrcamentoItem">
+    <Position X="6.5" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAABAABAAAAAAAAAAAAAAAAAAAAQIAAIAAE=</HashCode>
+      <FileName>Models\OrcamentoItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Produto" />
+      <Property Name="Orcamento" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="OrceiPdf.Domain.Interfaces.IClienteRepository">
+    <Position X="8.5" Y="6.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IClienteRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OrceiPdf.Domain.Interfaces.IAsyncRepository&lt;T&gt;">
+    <Position X="10.75" Y="8.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>BAYAAAAIAAAAAQAAAAAABAAAAAAAEAAAAgAAAAAAAIA=</HashCode>
+      <FileName>Interfaces\IAsyncRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OrceiPdf.Domain.Interfaces.IEmpresaRepository">
+    <Position X="15" Y="6.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IEmpresaRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OrceiPdf.Domain.Interfaces.IOrcamentoRepository">
+    <Position X="4.75" Y="6.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IOrcamentoRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OrceiPdf.Domain.Interfaces.IProdutoRepository">
+    <Position X="11.75" Y="6.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IProdutoRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="OrceiPdf.Domain.Enum.EOrcamentoStatus">
+    <Position X="0.5" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Enum\EOrcamentoStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
