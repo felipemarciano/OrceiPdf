@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OrceiPdf.Web.Models
 {
-    public class EmpresaViewModel
+    public class ClienteViewModel
     {
         public Guid Id { get; set; }
         [Required]

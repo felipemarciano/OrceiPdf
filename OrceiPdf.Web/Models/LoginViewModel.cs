@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OrceiPdf.Web.Models
 {
@@ -11,6 +7,7 @@ namespace OrceiPdf.Web.Models
         [Required(ErrorMessage = "O email é obrigatório")]
         [EmailAddress(ErrorMessage = "Email inválido")]
         public string Email { get; set; }
+        [Display(Name = "Senha")]
         [Required(ErrorMessage = "A senha é obrigatória")]
         [DataType(DataType.Password)]
         public string Password { get; set; }

@@ -16,8 +16,13 @@ namespace OrceiPdf.IoC
             services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
 
             services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
             services.AddScoped<IEmpresaService, EmpresaService>();
+            services.AddScoped<IClienteService, ClienteService>();
+            services.AddScoped<IProdutoService, ProdutoService>();
+            services.AddScoped<IOrcamentoService, OrcamentoService>();
         }
     }
 }

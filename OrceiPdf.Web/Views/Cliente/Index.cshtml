@@ -1,25 +1,27 @@
-﻿@model EmpresaViewModel
+﻿@model ClienteViewModel
 
 @{
-    ViewData["Title"] = "Minha Empresa";
+    ViewData["Title"] = "Meus Clientes";
 }
-
 
 <div class="row">
     <div class="col-md-4 col-sm-12 my-auto d-flex justify-content-center mb-4">
         <div class="d-flex align-items-center my-auto">
-            <img class="img-fluid mb-5" src="~/images/undraw_Building_re_xfcm.svg" width="300" />
+            <img class="img-fluid mb-5" src="~/images/undraw_conference_call_b0w6.svg" width="300" />
         </div>
     </div>
     <div class="col-md-8 col-sm-12">
-        @if (Model.Id == Guid.Empty)
-        {
-            <h3>Registrar Empresa</h3>
-        }
-        else
-        {
-            <h3>Editar Empresa</h3>
-        }
+        <div class="d-flex">
+            @if (Model.Id == Guid.Empty)
+            {
+                <h3>Registrar Cliente</h3>
+            }
+            else
+            {
+                <h3>Editar Cliente</h3>
+                <a href="/cliente" class="btn btn-primary d-inline ml-auto"><i class="fa fa-plus"></i> Novo</a>
+            }
+        </div>
         <hr />
         <form method="post" id="form-crud" class="p-2">
             <input type="hidden" asp-for="Id" />
@@ -64,6 +66,33 @@
         </form>
     </div>
 </div>
+<div class="row">
+    <div class="card card-custom gutter-b w-100 mt-4">
+        <div class="card-header flex-wrap pt-4">
+            <h5 class="card-title">
+                Clientes
+            </h5>
+        </div>
+        <div class="card-body">
+            <!--begin: Datatable-->
+            <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-checkable dataTable no-footer dtr-inline" id="tbDados" role="grid" aria-describedby="kt_datatable_info">
+                            <thead>
+                                <tr role="row">
+                                    <th class="sorting_disabled" aria-label="Editar">Editar</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" aria-label="Nome">Nome</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--end: Datatable-->
+        </div>
+    </div>
+</div>
 
 @await Component.InvokeAsync("ModalCrud")
 
@@ -104,6 +133,43 @@
                     required: true,
                     cnpjBR: true
                 }
+            }
+        });
+
+        var tableElement = null;
+
+        function loadGrid() {
+            if (tableElement != null)
+                tableElement.ajax.reload();
+        }
+
+        tableElement = $('#tbDados');
+
+        tableElement = tableElement.on('processing.dt', function (e, settings, processing) {
+        }).DataTable({
+            ajax: {
+                "url": "@Url.Content("~/")" + "Cliente/GetGrid",
+                "type": "POST",
+                "data": function (d) {
+                    return $.extend({}, d, {
+                        "sSortColumnName": $($($('#tbDados').find("th")[d.iSortCol_0])[0]).data("db")
+                    });
+                }
+            },
+            columnDefs: [
+                {
+                    'sortable': false,
+                    'targets': [0]
+                },
+                {
+                    "targets": [0],
+                    "render": function (data, type, full) {
+                        return "<a href='?id=" + data + "' class='edit-click mx-3' data-id='" + data + "'><i class='fa fa-edit'></i></a>";
+                    }
+                }
+            ],
+            sorting: [[1, "desc"]],
+            drawCallback: function (oSettings) {
             }
         });
     });

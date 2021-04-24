@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using OrceiPdf.Domain.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OrceiPdf.Repository.Repository
 {
@@ -15,6 +11,10 @@ namespace OrceiPdf.Repository.Repository
             : base(options) { }
 
         public DbSet<Empresa> Empresas { get; set; }
+        public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Orcamento> Orcamentos { get; set; }
+        public DbSet<OrcamentoItem> OrcamentoItens { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

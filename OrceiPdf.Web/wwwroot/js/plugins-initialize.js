@@ -1,38 +1,33 @@
 ﻿
-$(document).ready(function () {
-    //jquery blockUI
-    $.blockUI.defaults = {
-        message: "Carregando...",
-        overlayCSS: {
-            backgroundColor: '#000',
-            opacity: 0.4,
-            cursor: 'wait',
-            display: 'block',
-        },
-        css: {
-            width: '30%',
-            top: '40%',
-            left: '35%',
-            textAlign: 'center',
-            cursor: 'wait',
-            border: 'none',
-            padding: '15px',
-            backgroundColor: '#000',
-            '-webkit-border-radius': '10px',
-            '-moz-border-radius': '10px',
-            opacity: .5,
-            color: '#fff',
-        },
-        baseZ: 5000,
-        fadeIn: 200,
-        fadeOut: 600,
-    };
-});
-
+//jquery blockUI
+$.blockUI.defaults = {
+    message: "Carregando...",
+    overlayCSS: {
+        backgroundColor: '#000',
+        opacity: 0.4,
+        cursor: 'wait',
+        display: 'block',
+    },
+    css: {
+        width: '30%',
+        top: '40%',
+        left: '35%',
+        textAlign: 'center',
+        cursor: 'wait',
+        border: 'none',
+        padding: '15px',
+        backgroundColor: '#000',
+        '-webkit-border-radius': '10px',
+        '-moz-border-radius': '10px',
+        opacity: .5,
+        color: '#fff',
+    },
+    baseZ: 5000,
+    fadeIn: 200,
+    fadeOut: 600,
+};
 
 $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
-
-//****
 
 //Jquery DataTable
 $.extend(true, $.fn.dataTable.defaults, {

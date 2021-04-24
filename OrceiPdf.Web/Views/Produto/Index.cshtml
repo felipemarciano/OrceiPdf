@@ -1,0 +1,147 @@
+﻿@model ProdutoViewModel
+
+@{
+    ViewData["Title"] = "Produtos";
+}
+
+<div class="row">
+    <div class="col-md-4 col-sm-12 my-auto d-flex justify-content-center mb-4">
+        <div class="d-flex align-items-center my-auto">
+            <img class="img-fluid mb-5" src="~/images/undraw_deliveries_131a.svg" width="300" />
+        </div>
+    </div>
+    <div class="col-md-8 col-sm-12">
+        <div class="d-flex">
+            @if (Model.Id == Guid.Empty)
+            {
+                <h3>Registrar Produto</h3>
+            }
+            else
+            {
+                <h3>Editar Produto</h3>
+                <a href="/produto" class="btn btn-primary d-inline ml-auto"><i class="fa fa-plus"></i> Novo</a>
+            }
+        </div>
+        <hr />
+        <form method="post" id="form-crud" class="p-2">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserId" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label class="font-weight-bold" asp-for="Descricao"></label><span class="text-danger">*</span>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-bold" asp-for="UnidadeMedida"></label>
+                <input asp-for="UnidadeMedida" class="form-control" />
+                <span asp-validation-for="UnidadeMedida" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-bold" asp-for="ValorUnitario"></label><span class="text-danger">*</span>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">R$</span>
+                    </div>
+                    <input asp-for="ValorUnitario" class="form-control" />
+                    <span asp-validation-for="ValorUnitario" class="text-danger"></span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="card card-custom gutter-b w-100 mt-4">
+        <div class="card-header flex-wrap pt-4">
+            <h5 class="card-title">
+                Produtos
+            </h5>
+        </div>
+        <div class="card-body">
+            <!--begin: Datatable-->
+            <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-checkable dataTable no-footer dtr-inline" id="tbDados" role="grid" aria-describedby="kt_datatable_info">
+                            <thead>
+                                <tr role="row">
+                                    <th class="sorting_disabled" aria-label="Editar">Editar</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" aria-label="Nome">Nome</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" aria-label="Nome">Valor Unitário</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--end: Datatable-->
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ModalCrud")
+
+<script>
+    $(document).ready(function () {
+
+        $('#ValorUnitario').mask("#.##0,00", { reverse: true });
+
+        $("#form-crud").validate({
+            rules: {
+                Descricao: {
+                    required: true
+                },
+                UnidadeMedida: {
+                    required: false
+                },
+                ValorUnitario: {
+                    required: true
+                }
+            }
+        });
+
+        var tableElement = null;
+
+        function loadGrid() {
+            if (tableElement != null)
+                tableElement.ajax.reload();
+        }
+
+        tableElement = $('#tbDados');
+
+        tableElement = tableElement.on('processing.dt', function (e, settings, processing) {
+        }).DataTable({
+            ajax: {
+                "url": "@Url.Content("~/")" + "Produto/GetGrid",
+                "type": "POST",
+                "data": function (d) {
+                    return $.extend({}, d, {
+                        "sSortColumnName": $($($('#tbDados').find("th")[d.iSortCol_0])[0]).data("db")
+                    });
+                }
+            },
+            columnDefs: [
+                {
+                    'sortable': false,
+                    'targets': [0]
+                },
+                {
+                    "targets": [0],
+                    "render": function (data, type, full) {
+                        return "<a href='?id=" + data + "' class='edit-click mx-3' data-id='" + data + "'><i class='fa fa-edit'></i></a>";
+                    }
+                },
+                {
+                    "targets": [2],
+                    "render": function (data, type, full) {
+                        return `R$ ${data}`;
+                    }
+                }
+            ],
+            sorting: [[1, "desc"]],
+            drawCallback: function (oSettings) {
+            }
+        });
+    });
+</script>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OrceiPdf.Domain.Models;
 using OrceiPdf.Web.Models;
@@ -16,31 +17,41 @@ namespace OrceiPdf.Web.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
+
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
+
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            var user = await userManager.FindByEmailAsync(model.Email);
+
+            if (user is null) {
+                ModelState.AddModelError(string.Empty, "Login Inválido");
+            }
+
             if (ModelState.IsValid) {
-                var result = await signInManager.PasswordSignInAsync(
-                    model.Email, model.Password, model.RememberMe, false);
+                var result = await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
                 if (result.Succeeded) {
                     return RedirectToAction("index", "home");
                 }
+
                 ModelState.AddModelError(string.Empty, "Login Inválido");
             }
             return View(model);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Logout()
@@ -49,6 +60,7 @@ namespace OrceiPdf.Web.Controllers
             return RedirectToAction("index", "home");
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -56,7 +68,7 @@ namespace OrceiPdf.Web.Controllers
 
                 var user = new User {
                     UserName = model.UserName,
-                    Email = model.Email                    
+                    Email = model.Email
                 };
 
                 var result = await userManager.CreateAsync(user, model.Password);

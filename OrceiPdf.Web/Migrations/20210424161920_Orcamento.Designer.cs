@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrceiPdf.Repository.Repository;
 
 namespace OrceiPdf.Web.Migrations
 {
     [DbContext(typeof(OrceiPdfDbContext))]
-    partial class OrceiPdfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210424161920_Orcamento")]
+    partial class Orcamento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,9 +237,6 @@ namespace OrceiPdf.Web.Migrations
 
                     b.Property<string>("Observacao")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

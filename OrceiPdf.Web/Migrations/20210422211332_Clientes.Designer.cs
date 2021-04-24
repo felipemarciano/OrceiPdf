@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrceiPdf.Repository.Repository;
 
 namespace OrceiPdf.Web.Migrations
 {
     [DbContext(typeof(OrceiPdfDbContext))]
-    partial class OrceiPdfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210422211332_Clientes")]
+    partial class Clientes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -212,107 +214,6 @@ namespace OrceiPdf.Web.Migrations
                     b.ToTable("Empresas");
                 });
 
-            modelBuilder.Entity("OrceiPdf.Domain.Models.Orcamento", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DataValidade")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("EmpresaId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Numero")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Observacao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmpresaId");
-
-                    b.ToTable("Orcamentos");
-                });
-
-            modelBuilder.Entity("OrceiPdf.Domain.Models.OrcamentoItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("OrcamentoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProdutoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("Quantidade")
-                        .HasColumnType("float");
-
-                    b.Property<double>("ValorUnitario")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrcamentoId");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.ToTable("OrcamentoItens");
-                });
-
-            modelBuilder.Entity("OrceiPdf.Domain.Models.Produto", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UnidadeMedida")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("ValorUnitario")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Produtos");
-                });
-
             modelBuilder.Entity("OrceiPdf.Domain.Models.Roles", b =>
                 {
                     b.Property<Guid>("Id")
@@ -478,52 +379,6 @@ namespace OrceiPdf.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("OrceiPdf.Domain.Models.Orcamento", b =>
-                {
-                    b.HasOne("OrceiPdf.Domain.Models.Empresa", "Empresa")
-                        .WithMany()
-                        .HasForeignKey("EmpresaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Empresa");
-                });
-
-            modelBuilder.Entity("OrceiPdf.Domain.Models.OrcamentoItem", b =>
-                {
-                    b.HasOne("OrceiPdf.Domain.Models.Orcamento", "Orcamento")
-                        .WithMany("OrcamentoItens")
-                        .HasForeignKey("OrcamentoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OrceiPdf.Domain.Models.Produto", "Produto")
-                        .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Orcamento");
-
-                    b.Navigation("Produto");
-                });
-
-            modelBuilder.Entity("OrceiPdf.Domain.Models.Produto", b =>
-                {
-                    b.HasOne("OrceiPdf.Domain.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("OrceiPdf.Domain.Models.Orcamento", b =>
-                {
-                    b.Navigation("OrcamentoItens");
                 });
 #pragma warning restore 612, 618
         }

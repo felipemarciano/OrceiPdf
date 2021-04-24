@@ -1,20 +1,26 @@
-﻿
-@model LoginViewModel
+﻿@model LoginViewModel
 @{
     ViewBag.Title = "Login";
 }
-<h3>Login</h3>
+
 <div class="row">
-    <div class="col-md-12">
-        <form method="post">
+    <div class="col-md-4 col-sm-12 my-auto d-flex justify-content-center mb-4">
+        <div class="d-flex align-items-center my-auto">
+            <img class="img-fluid mb-5" src="~/images/undraw_secure_login_pdn4.svg" width="300" />
+        </div>
+    </div>
+    <div class="col-md-8 col-sm-12">
+        <h3>Login</h3>
+        <hr />
+        <form method="post" id="form-crud">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Email"></label>
+                <label asp-for="Email"></label><span class="text-danger">*</span>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password"></label>
+                <label asp-for="Password"></label><span class="text-danger">*</span>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
@@ -30,3 +36,27 @@
         </form>
     </div>
 </div>
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $.validator.addMethod("telefone", function (value, element) {
+            if (value)
+                return /\d{4,5}\-\d{4}/i.test(value);
+            else
+                return true;
+        }, "Informe um numero válido");
+
+        $("#form-crud").validate({
+            rules: {
+                Email: {
+                    required: true,
+                    email: true
+                },
+                Password: {
+                    required: true
+                }
+            }
+        });
+    });
+</script>

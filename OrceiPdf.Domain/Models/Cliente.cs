@@ -2,7 +2,7 @@
 
 namespace OrceiPdf.Domain.Models
 {
-    public class Empresa : BaseEntity
+    public class Cliente : BaseEntity
     {
         public string NomeFantasia { get; set; }
         public string RazaoSocial { get; set; }
