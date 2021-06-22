@@ -58,5 +58,10 @@ namespace OrceiPdf.Application.Services
         {
             return await _orcamentoRepository.GetbyUserId(userId, Id);
         }
+
+        public async Task<Orcamento> GetFromPdf(Guid Id)
+        {
+            return await _orcamentoRepository.GetFromPdf(Id);
+        }
     }
 }

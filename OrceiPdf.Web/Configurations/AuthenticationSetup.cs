@@ -16,7 +16,9 @@ namespace OrceiPdf.Web.Configurations
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddIdentity<User, Roles>()
+            services.AddIdentity<User, Roles>(options => {
+                options.User.RequireUniqueEmail = true;
+                })
                 .AddEntityFrameworkStores<OrceiPdfDbContext>()
                 .AddErrorDescriber<MultilanguageIdentityErrorDescriber>()
                 .AddDefaultTokenProviders();

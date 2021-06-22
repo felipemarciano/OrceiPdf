@@ -9,14 +9,14 @@
                     <i class="fa fa-plus"></i> Adicionar Item
                 </button>
             </div>
-            <table class="table table-bordered table-checkable dataTable no-footer dtr-inline" id="tbDadosOrcamentoItemOrcamento" role="grid">
+            <table class="table table-bordered dataTable no-footer dtr-inline" id="tbDadosOrcamentoItemOrcamento" role="grid">
                 <thead>
                     <tr role="row">
                         <th class="sorting_disabled" aria-label="Actions"></th>
-                        <th tabindex="0">Nome</th>
-                        <th tabindex="0">Quantidade</th>
-                        <th tabindex="0">Valor unitário</th>
-                        <th tabindex="0">Valor Total</th>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Valor unitário</th>
+                        <th>Valor Total</th>
                     </tr>
                 </thead>
             </table>
@@ -123,6 +123,7 @@
                 "<'row'<'col-sm-5'><'col-sm-7'>>",
             initComplete: function () { },
             searching: true,
+            responsive: true,
             processing: false,
             serverSide: false,
             stateSave: false,

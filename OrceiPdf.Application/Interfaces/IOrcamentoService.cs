@@ -9,7 +9,7 @@ namespace OrceiPdf.Application.Interfaces
         Task<GridResult<Orcamento>> ListarAsync(Guid empresaId, DataTableViewModel param);
 
         Task<Orcamento> GetbyUserId(Guid userId, Guid Id);
-
         Task AddOrUpdate(Orcamento orcamento);
+        Task<Orcamento> GetFromPdf(Guid Id);
     }
 }

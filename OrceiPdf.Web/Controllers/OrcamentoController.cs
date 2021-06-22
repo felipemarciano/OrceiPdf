@@ -48,6 +48,14 @@ namespace OrceiPdf.Web.Controllers
             ViewBag.ListCliente = listClients.List.ToDictionary(x => x.Id, x => x.NomeFantasia);
         }
 
+        async Task ConfiguraTela()
+        {
+            var empresa =
+            await _empresaService.GetbyUserId(Guid.Parse(User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier).Value));
+
+            ViewBag.HasEmpresa = empresa != null;
+        }
+
         public async Task<IActionResult> IndexAsync(Guid id)
         {
             await ConfigurarTela();
@@ -71,8 +79,10 @@ namespace OrceiPdf.Web.Controllers
             return View(orcamento.ToOrcamentoViewModel());
         }
 
-        public IActionResult List()
+        public async Task<IActionResult> ListAsync()
         {
+            await ConfiguraTela();
+
             return View();
         }
 
@@ -117,11 +127,14 @@ namespace OrceiPdf.Web.Controllers
 
         public async Task<IActionResult> GetGrid(DataTableViewModel param)
         {
+            GridResult<Orcamento> retorno = new() { CountTotal = 0, List = new List<Orcamento>() };
+
             var empresa =
                  await _empresaService.GetbyUserId(Guid.Parse(User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier).Value));
 
-            var retorno = await _orcamentoService
-                                .ListarAsync(empresa.Id, param);
+            if (empresa != null)
+                retorno = await _orcamentoService
+                                    .ListarAsync(empresa.Id, param);
 
             return Json(new {
                 param.sEcho,

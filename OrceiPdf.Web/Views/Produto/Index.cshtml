@@ -43,11 +43,22 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">R$</span>
                     </div>
-                    <input asp-for="ValorUnitario" class="form-control" value="@Model.ValorUnitario.ToString("N2")"/>
+                    <input asp-for="ValorUnitario" class="form-control" value="@Model.ValorUnitario.ToString("N2")" />
                     <span asp-validation-for="ValorUnitario" class="text-danger"></span>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+
+            @if (ViewBag.HasEmpresa)
+            {
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+            }
+            else
+            {
+                <button type="button" class="btn disabled btn-primary"><i class="fas fa-save"></i> Salvar</button>
+                <div class="alert alert-warning py-2 mt-2" role="alert">
+                    *** Configure sua <a href="/empresa" class="alert-link">empresa</a> antes de cadastrar um produto.
+                </div>
+            }
         </form>
     </div>
 </div>
@@ -67,8 +78,8 @@
                             <thead>
                                 <tr role="row">
                                     <th class="sorting_disabled" aria-label="Editar">Editar</th>
-                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" aria-label="Nome">Nome</th>
-                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" aria-label="Nome">Valor Unitário</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" data-db="Descricao">Descrição</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" data-db="ValorUnitario">Valor Unitário</th>
                                 </tr>
                             </thead>
                         </table>

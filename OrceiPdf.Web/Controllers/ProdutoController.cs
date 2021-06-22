@@ -15,17 +15,29 @@ namespace OrceiPdf.Web.Controllers
     {
         private readonly ILogger<ProdutoController> _logger;
         private readonly IProdutoService _produtoService;
+        private readonly IEmpresaService _empresaService;
 
-        public ProdutoController(ILogger<ProdutoController> logger, IProdutoService produtoService)
+        public ProdutoController(ILogger<ProdutoController> logger, IProdutoService produtoService, IEmpresaService empresaService)
         {
             _logger = logger;
             _produtoService = produtoService;
+            _empresaService = empresaService;
+        }
+
+        async Task ConfiguraTela()
+        {
+            var empresa =
+            await _empresaService.GetbyUserId(Guid.Parse(User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier).Value));
+
+            ViewBag.HasEmpresa = empresa != null;
         }
 
         public async Task<IActionResult> IndexAsync(Guid id)
         {
             var produto =
                 await _produtoService.GetByIdAsync(id);
+
+            await ConfiguraTela();
 
             if (produto is null) {
                 produto = new() {
@@ -39,6 +51,8 @@ namespace OrceiPdf.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> IndexAsync(ProdutoViewModel model)
         {
+            await ConfiguraTela();
+
             if (ModelState.IsValid) {
                 try {
 

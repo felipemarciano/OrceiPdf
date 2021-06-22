@@ -9,11 +9,14 @@
     <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <meta name="theme-color" content="#461e76" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
     <link href="~/lib/select2-bootstrap-theme/select2-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link rel="manifest" href="/manifest.json">
     <link rel="manifest" href="/site.webmanifest">
 
 </head>
@@ -30,39 +33,55 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Orcamento" asp-action="List">Orçamentos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Produto" asp-action="Index">Produtos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cliente" asp-action="Index">Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Empresa" asp-action="Index">Empresa</a>
+                        </li>
+                        }
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
-                                <div class="nav-link">
-                                    @User.Identity.Name
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <form method="post" asp-controller="account" asp-action="logout">
-                                    <button type="submit" style="width:auto"
-                                            class="nav-link btn btn-link">
-                                        <u>Logout</u>
-                                    </button>
-                                </form>
-                            </li>
+                        <li class="nav-item">
+                            <div class="nav-link">
+                                @User.Identity.Name
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <form method="post" asp-controller="account" asp-action="logout">
+                                <button type="submit" style="width:auto"
+                                        class="nav-link btn btn-link">
+                                    <u>Logout</u>
+                                </button>
+                            </form>
+                        </li>
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="account" asp-action="register">
-                                    Registrar
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="account" asp-action="login">
-                                    Login
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="account" asp-action="register">
+                                Registrar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="account" asp-action="login">
+                                Login
+                            </a>
+                        </li>
                         }
                     </ul>
                 </div>
@@ -71,6 +90,10 @@
     </header>
     <div class="container">
         <main role="main" class="py-4 mx-4">
+            @if (SignInManager.IsSignedIn(User))
+            {
+            @await Component.InvokeAsync("PrimeirosPassos", new { userId = Guid.Parse(User.Claims.FirstOrDefault(o => o.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value) })
+            }
             @RenderBody()
         </main>
     </div>
@@ -112,5 +135,21 @@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/service-worker.js').then(function (registration) {
+                    // Registration was successful
+                }, function (err) {
+                    // registration failed :(
+                    console.log('ServiceWorker registration failed: ', err);
+                }).catch(function (err) {
+                    console.log(err)
+                });
+            });
+        } else {
+            console.log('service worker is not supported');
+        }
+    </script>
 </body>
 </html>

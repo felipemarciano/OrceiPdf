@@ -26,6 +26,15 @@ namespace OrceiPdf.Repository.Repository
                 .FirstOrDefaultAsync(x => x.Id == Id);
         }
 
+        public async Task<Orcamento> GetFromPdf(Guid Id)
+        {
+            return await Context.Orcamentos.AsNoTracking()
+                .Include(x => x.OrcamentoItens).ThenInclude(x => x.Produto)
+                .Include(x => x.Cliente)
+                .Include(x => x.Empresa)
+                .FirstOrDefaultAsync(x => x.Id == Id);
+        }
+
         public int GetLastNumber()
         {
             return Context.Orcamentos.Count() + 1;

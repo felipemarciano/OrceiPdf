@@ -7,18 +7,30 @@
 <div class="row align-items-center">
     <div class="col-md-4 col-sm-12 my-auto d-flex justify-content-center  mb-4">
         <div class="d-flex align-items-center my-auto">
-            <img class="img-fluid mb-5" src="~/images/undraw_printing_invoices_5r4r.svg" width="200" />
+            <img class="img-fluid mb-5" src="~/images/undraw_personal_finance_tqcd.svg" width="200" />
         </div>
     </div>
-    <div class="col-md-8 col-sm-12">
-        <div class="d-flex">
+    <div class="col-md-8 col-sm-12 ">
+        <div class="d-flex justify-content-sm-center  justify-content-md-start">
             <h2>Meus Orçamentos</h2>
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-12 d-flex mr-auto">
-        <a href="/orcamento" class="btn btn-primary d-inline ml-auto"><i class="fa fa-plus"></i> Novo Orçamentos</a>
+<div class="row mt-4">
+    <div class="col-12 d-flex flex-wrap justify-content-between">
+        @if (ViewBag.HasEmpresa)
+        {
+            <a href="/orcamento" class="btn btn-primary d-inline ml-auto"><i class="fa fa-plus"></i> Novo Orçamentos</a>
+        }
+        else
+        {
+            <div class="alert alert-warning py-2" role="alert">
+                *** Configure sua <a href="/empresa" class="alert-link">empresa</a> antes de cadastrar um orçamento.
+            </div>
+            <div>
+                <a href="#" class="btn btn-primary disabled d-inline ml-auto"><i class="fa fa-plus"></i> Novo Orçamentos</a>
+            </div>
+        }
     </div>
 </div>
 <div class="row">
@@ -29,25 +41,23 @@
             </h5>
         </div>
         <div class="card-body">
-            <!--begin: Datatable-->
-            <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="no-footer">
                 <div class="row">
                     <div class="col-sm-12">
-                        <table class="table table-bordered table-checkable dataTable no-footer dtr-inline" id="tbDados" role="grid" aria-describedby="kt_datatable_info">
+                        <table class="table table-bordered dataTable dt-responsive no-footer dtr-inline" id="tbDados" role="grid">
                             <thead>
                                 <tr role="row">
-                                    <th class="sorting_disabled" aria-label="Editar">Editar</th>
-                                    <th class="sorting_disabled" tabindex="0" aria-label="Nome">Número</th>
-                                    <th class="sorting_disabled" tabindex="0" aria-label="Cliente.NomeFantasia">Nome fantasia</th>
-                                    <th class="sorting_disabled" tabindex="0" aria-label="Status">Status</th>
-                                    <th class="sorting_disabled" tabindex="0" aria-label="Status">Compartilhar</th>
+                                    <th class="all sorting_disabled" data-priority="1" aria-label="Editar">Editar</th>
+                                    <th class="all" data-priority="1" aria-label="Nome" data-db="Numero">Número</th>
+                                    <th class="" data-priority="1" data-db="Cliente.NomeFantasia">Nome fantasia</th>
+                                    <th class="" data-priority="1" data-db="Status">Status</th>
+                                    <th class="sorting_disabled">Compartilhar</th>
                                 </tr>
                             </thead>
                         </table>
                     </div>
                 </div>
             </div>
-            <!--end: Datatable-->
         </div>
     </div>
 </div>
@@ -56,11 +66,6 @@
 <script>
     $(document).ready(function () {
         var tableElement = null;
-
-        function loadGrid() {
-            if (tableElement != null)
-                tableElement.ajax.reload();
-        }
 
         tableElement = $('#tbDados');
 
@@ -78,6 +83,7 @@
             columnDefs: [
                 {
                     'sortable': false,
+                     className: 'dtr-control',
                     'targets': [0]
                 },
                 {
@@ -91,30 +97,40 @@
                     "render": function (data, type, full) {
                         switch (data) {
                             case "Aprovado":
-                                return `<div class="alert alert-success" role="alert">
+                                return `<div class="alert alert-success text-center" role="alert">
                                           ${data}
                                         </div>`;
                             case "Pendente":
-                                return `<div class="alert alert-warning" role="alert">
+                                return `<div class="alert alert-warning text-center" role="alert">
                                           ${data}
                                         </div>`;
                             case "Cancelado":
-                                return `<div class="alert alert-secondary" role="alert">
+                                return `<div class="alert alert-secondary text-center" role="alert">
                                           ${data}
                                         </div>`;
                             }
                     }
                 },
                 {
+                    'sortable': false,
                     "targets": [4],
                     "render": function (data, type, full) {
 
                         var url = `${window.location.protocol}//${window.location.hostname}/orcamento/pdf?id=${full[0]}`
 
-                        return "<a target='_blank' href='/orcamento/pdf?id=" + full[0] + "' class='mx-3 text-danger' data-toggle='tooltip' data-placement='bottom' title='Visualizar PDF' data-id='" + data + "'><i class='fa fa-2x fa-file-pdf'></i></a>"
-                            + `<a target="_blank" href="https://web.whatsapp.com/send?text=${url}"
-                                data-toggle='tooltip' data-placement='bottom' title='Enviar via whatsapp'
-                                data-action="share/whatsapp/share"><i class="fab fa-2x fa-whatsapp text-success"><span class="d-none">Ícone do Whatsapp</span></i></a>`;
+                        return `<div class='d-flex d-flex-wrap justify-content-center'>
+                                    <a target='_blank' href='/orcamento/pdf?id=${full[0]}' class='mx-3 text-danger' data-toggle='tooltip' data-placement='bottom' title='Visualizar PDF' data-id='${data}'><i class='fa fa-2x fa-file-pdf'></i></a>
+                                    <a target="_blank" class="d-none d-lg-block" href="https://web.whatsapp.com/send?text=${url}"
+                                        data-toggle='tooltip' data-placement='bottom' title='Enviar via whatsapp'
+                                        data-action="share/whatsapp/share"><i class="fab fa-2x fa-whatsapp text-success">
+                                        <span class="d-none">Ícone do Whatsapp</span></i>
+                                    </a>
+                                    <a target="_blank" class="d-block d-sm-block d-md-none d-lg-none d-xl-none" href="whatsapp://send?text=${url}"
+                                        data-toggle='tooltip' data-placement='bottom' title='Enviar via whatsapp'
+                                        data-action="share/whatsapp/share"><i class="fab fa-2x fa-whatsapp text-success">
+                                        <span class="d-none">Ícone do Whatsapp</span></i>
+                                    </a>
+                                </div>`;
                     }
                 }
             ],

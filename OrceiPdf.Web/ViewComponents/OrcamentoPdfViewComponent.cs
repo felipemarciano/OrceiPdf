@@ -18,7 +18,7 @@ namespace OrceiPdf.Web.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(Guid id)
         {
-            var orcamento = await _orcamentoService.GetByIdAsync(id);
+            var orcamento = await _orcamentoService.GetFromPdf(id);
 
             return View(orcamento);
         }

@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "OrceiPDF App",
   "short_name": "OrceiPDF",
   "start_url": "../",
@@ -13,8 +13,5 @@
       "type": "image/png",
       "sizes": "192x192"
     }
-  ],
-  "background_color": "#ffffff",
-  "theme_color": "#461e76",
-  "display": "standalone"
+  ]
 }

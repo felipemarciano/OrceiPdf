@@ -1,0 +1,35 @@
+﻿@if (!ViewBag.HasEmpresa || !ViewBag.HasCliente || !ViewBag.HasProduto)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Primeiros passos:</strong>
+        <ul class="mt-2">
+            @if (!ViewBag.HasEmpresa)
+            {
+                <li> Configure sua empresa</li>
+            }
+            else
+            {
+                <li class="line-through"> Configure sua empresa</li>
+            }
+            @if (!ViewBag.HasCliente)
+            {
+                <li> Cadastre seus clientes</li>
+            }
+            else
+            {
+                <li class="line-through"> Cadastre seus clientes</li>
+            }
+            @if (!ViewBag.HasProduto)
+            {
+                <li> Cadastre seus produtos</li>
+            }
+            else
+            {
+                <li class="line-through"> Cadastre seus produtos</li>
+            }
+        </ul>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}

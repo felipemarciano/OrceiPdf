@@ -62,7 +62,17 @@
                 <input asp-for="Cnpj" class="form-control" />
                 <span asp-validation-for="Cnpj" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+            @if (ViewBag.HasEmpresa)
+            {
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+            }
+            else
+            {
+                <button type="button" class="btn disabled btn-primary"><i class="fas fa-save"></i> Salvar</button>
+                <div class="alert alert-warning py-2 mt-2" role="alert">
+                    *** Configure sua <a href="/empresa" class="alert-link">empresa</a> antes de cadastrar um produto.
+                </div>
+            }
         </form>
     </div>
 </div>
@@ -82,10 +92,10 @@
                             <thead>
                                 <tr role="row">
                                     <th class="sorting_disabled" aria-label="Editar">Editar</th>
-                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" aria-label="Nome">Nome</th>
-                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" aria-label="Nome">Razão Social</th>
-                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" aria-label="Nome">E-mail</th>
-                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" aria-label="Nome">Celular</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" data-db="NomeFantasia">Nome</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" data-db="RazaoSocial">Razão Social</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" data-db="Email">E-mail</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-controls="kt_datatable" data-db="Celular">Celular</th>
                                 </tr>
                             </thead>
                         </table>
@@ -122,6 +132,9 @@
                     required: true
                 },
                 Endereco: {
+                    required: true
+                },
+                Email: {
                     required: true
                 },
                 Telefone: {
