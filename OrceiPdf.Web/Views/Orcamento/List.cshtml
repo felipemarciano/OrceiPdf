@@ -1,0 +1,126 @@
+﻿@model OrcamentoViewModel
+
+@{
+    ViewData["Title"] = "Meus Orçamentos";
+}
+
+<div class="row align-items-center">
+    <div class="col-md-4 col-sm-12 my-auto d-flex justify-content-center  mb-4">
+        <div class="d-flex align-items-center my-auto">
+            <img class="img-fluid mb-5" src="~/images/undraw_printing_invoices_5r4r.svg" width="200" />
+        </div>
+    </div>
+    <div class="col-md-8 col-sm-12">
+        <div class="d-flex">
+            <h2>Meus Orçamentos</h2>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 d-flex mr-auto">
+        <a href="/orcamento" class="btn btn-primary d-inline ml-auto"><i class="fa fa-plus"></i> Novo Orçamentos</a>
+    </div>
+</div>
+<div class="row">
+    <div class="card card-custom gutter-b w-100 mt-4">
+        <div class="card-header flex-wrap pt-4">
+            <h5 class="card-title">
+                Lista
+            </h5>
+        </div>
+        <div class="card-body">
+            <!--begin: Datatable-->
+            <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-checkable dataTable no-footer dtr-inline" id="tbDados" role="grid" aria-describedby="kt_datatable_info">
+                            <thead>
+                                <tr role="row">
+                                    <th class="sorting_disabled" aria-label="Editar">Editar</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-label="Nome">Número</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-label="Cliente.NomeFantasia">Nome fantasia</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-label="Status">Status</th>
+                                    <th class="sorting_disabled" tabindex="0" aria-label="Status">Compartilhar</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--end: Datatable-->
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var tableElement = null;
+
+        function loadGrid() {
+            if (tableElement != null)
+                tableElement.ajax.reload();
+        }
+
+        tableElement = $('#tbDados');
+
+        tableElement = tableElement.on('processing.dt', function (e, settings, processing) {
+        }).DataTable({
+            ajax: {
+                "url": "@Url.Content("~/")" + "Orcamento/GetGrid",
+                "type": "POST",
+                "data": function (d) {
+                    return $.extend({}, d, {
+                        "sSortColumnName": $($($('#tbDados').find("th")[d.iSortCol_0])[0]).data("db")
+                    });
+                }
+            },
+            columnDefs: [
+                {
+                    'sortable': false,
+                    'targets': [0]
+                },
+                {
+                    "targets": [0],
+                    "render": function (data, type, full) {
+                        return "<a href='/orcamento?id=" + data + "' class='edit-click mx-3' data-id='" + data + "'><i class='fa fa-edit'></i></a>";
+                    }
+                },
+                {
+                    "targets": [3],
+                    "render": function (data, type, full) {
+                        switch (data) {
+                            case "Aprovado":
+                                return `<div class="alert alert-success" role="alert">
+                                          ${data}
+                                        </div>`;
+                            case "Pendente":
+                                return `<div class="alert alert-warning" role="alert">
+                                          ${data}
+                                        </div>`;
+                            case "Cancelado":
+                                return `<div class="alert alert-secondary" role="alert">
+                                          ${data}
+                                        </div>`;
+                            }
+                    }
+                },
+                {
+                    "targets": [4],
+                    "render": function (data, type, full) {
+
+                        var url = `${window.location.protocol}//${window.location.hostname}/orcamento/pdf?id=${full[0]}`
+
+                        return "<a target='_blank' href='/orcamento/pdf?id=" + full[0] + "' class='mx-3 text-danger' data-toggle='tooltip' data-placement='bottom' title='Visualizar PDF' data-id='" + data + "'><i class='fa fa-2x fa-file-pdf'></i></a>"
+                            + `<a target="_blank" href="https://web.whatsapp.com/send?text=${url}"
+                                data-toggle='tooltip' data-placement='bottom' title='Enviar via whatsapp'
+                                data-action="share/whatsapp/share"><i class="fab fa-2x fa-whatsapp text-success"><span class="d-none">Ícone do Whatsapp</span></i></a>`;
+                    }
+                }
+            ],
+            sorting: [[1, "desc"]],
+            drawCallback: function (oSettings) {
+            }
+        });
+    });
+</script>

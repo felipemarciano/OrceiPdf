@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OrceiPdf.Domain.Models
 {
@@ -6,8 +7,9 @@ namespace OrceiPdf.Domain.Models
     {
         public double Quantidade { get; set; }
         public string Descricao { get; set; }
-        public double ValorUnitario { get; set; }
-        public Guid OrcamentoId { get; set; }
+        [Column(TypeName = "decimal(15, 2)")]
+        public decimal ValorUnitario { get; set; }
+        public Guid OrcamentoId { get; set; } 
         public Orcamento Orcamento { get; set; }
         public Guid ProdutoId { get; set; }
         public Produto Produto { get; set; }

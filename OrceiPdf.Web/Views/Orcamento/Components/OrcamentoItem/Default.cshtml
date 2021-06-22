@@ -1,0 +1,290 @@
+﻿@model List<OrcamentoItem>
+
+<div class="dataTables_wrapper dt-bootstrap4 no-footer">
+    <div class="row">
+        <div class="col-sm-12 border rounded p-2">
+            <label class="font-weight-bold">Itens</label>
+            <div class="mb-3">
+                <button type="button" id="btnOpenModalOrcamentoItem" class="btn btn-outline-primary mr-2" data-toggle="modal" data-target="#addModalOrcamentoItem">
+                    <i class="fa fa-plus"></i> Adicionar Item
+                </button>
+            </div>
+            <table class="table table-bordered table-checkable dataTable no-footer dtr-inline" id="tbDadosOrcamentoItemOrcamento" role="grid">
+                <thead>
+                    <tr role="row">
+                        <th class="sorting_disabled" aria-label="Actions"></th>
+                        <th tabindex="0">Nome</th>
+                        <th tabindex="0">Quantidade</th>
+                        <th tabindex="0">Valor unitário</th>
+                        <th tabindex="0">Valor Total</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="py-4">
+                <label class="h5">Valor Total:</label>
+                <label class="h4" id="lblValorTotal"></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-md fade" id="addModalOrcamentoItem" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divModalOrcamentoItem" class="col-sm-12 p-4 border rounded">
+                    <div class="form-group">
+                        <label class="font-weight-bold">Quantidade</label>
+                        <input type="hidden" id="OrcamentoItemId" name="OrcamentoItemId" />
+                        <input class="form-control" id="Quantidade" name="Quantidade" type="number" lang="pt-br" />
+                    </div>
+                    <table class="table table-bordered table-checkable dataTable no-footer dtr-inline" id="tbDadosOrcamentoItem" role="grid">
+                        <thead>
+                            <tr role="row">
+                                <th class="sorting_disabled"></th>
+                                <th class="sorting_disabled">Nome</th>
+                                <th class="sorting_disabled">Descricao</th>
+                            </tr>
+                        </thead>
+                    </table>
+                   
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" id="btnAdicionarOrcamentoItem" class="btn btn-primary">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/jquery.slim.js"></script>
+<script src="~/lib/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+<script>
+    function uuidv4() {
+        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+    }
+
+
+    $(document).ready(function () {
+
+        var tableElement2 = null;
+        tableElement2 = $('#tbDadosOrcamentoItem');
+        tableElement2 = tableElement2.on('processing.dt', function (e, settings, processing) {
+        }).DataTable({
+            dom: "<'row'<'col-sm-12'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            initComplete: function () { },
+            ajax: {
+                "url": "@Url.Content("~/")" + "Produto/GetGrid",
+                "type": "POST",
+                "data": function (d) {
+                    return $.extend({}, d, {
+                        "sSortColumnName": $($($('#tbDadosOrcamentoItem').find("th")[d.iSortCol_0])[0]).data("db")
+                    });
+                }
+            },
+            columnDefs: [{
+                targets: 0,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return `
+                        <label class="checkbox checkbox-single checkbox-primary mb-0">
+                            <input type="radio" name="chkSelect" value="${$("#OrcamentoItemId").val()}" data-id="${data}" data-descricao="${full[1]}" data-valorUnitario="${full[2]}" class="checkable"/>
+                            <span></span>
+                        </label>`;
+                }
+            },
+            ],
+            select: {
+                style: 'single',
+                selector: 'td:first-child .checkable',
+            },
+            drawCallback: function (oSettings) {
+
+            }
+        });
+
+        var tableElement = null;
+        tableElement = $('#tbDadosOrcamentoItemOrcamento');
+        tableElement = tableElement.on('processing.dt', function (e, settings, processing) {
+        }).DataTable({
+            dom: "<'row'<'col-sm-12'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'><'col-sm-7'>>",
+            initComplete: function () { },
+            searching: true,
+            processing: false,
+            serverSide: false,
+            stateSave: false,
+            paging: false,
+            buttons: [],
+            columnDefs: [
+                {
+                    'sortable': false,
+                    'targets': [0]
+                },
+                {
+                    "targets": [0],
+                    "render": function (data, type, full) {
+                        return "<a href='javascript:void(0)' class='removeOrcamentoItemClick rowId' data-id='" + data + "'><i class='fa fa-trash'></i></a>";
+                    }
+                }
+            ],
+            drawCallback: function (oSettings) {
+                $(".removeOrcamentoItemClick").click(function () {
+
+                    $(`input[data-id="${$(this).data("id")}"]`).remove();
+
+                    tableElement
+                        .row($(this).parents('tr'))
+                        .remove()
+                        .draw(false);
+
+                    ReorderItensRelacionados();
+                });
+            }
+        });
+
+        @for (var i = 0; i < Model.Count(); i++)
+        {
+            var p = Model[i];
+
+            @:tableElement.row.add(["@(p.Id)", "@(p.Descricao)", "@(p.Quantidade)", "@(p.ValorUnitario.ToString("N2"))", "@((p.ValorUnitario * (decimal)p.Quantidade).ToString("N2"))"]).draw(false);
+
+            @:$("#form-crud").append(`<input type="hidden" data-id="${"@(p.Id)"}" name="OrcamentoItens[@i].Id" value="${"@(p.Id)"}" class="OrcamentoItens">`);
+            @:$("#form-crud").append(`<input type="hidden" data-id="${"@(p.Id)"}" name="OrcamentoItens[@i].ValorUnitario" value="${"@(p.ValorUnitario)"}" class="OrcamentoItens">`);
+            @:$("#form-crud").append(`<input type="hidden" data-id="${"@(p.Id)"}" name="OrcamentoItens[@i].Quantidade" value="${"@(p.Quantidade)"}" class="OrcamentoItens">`);
+            @:$("#form-crud").append(`<input type="hidden" data-id="${"@(p.Id)"}" name="OrcamentoItens[@i].ProdutoId" value="${"@(p.ProdutoId)"}" class="OrcamentoItens">`);
+            @:$("#form-crud").append(`<input type="hidden" data-id="${"@(p.Id)"}" name="OrcamentoItens[@i].Descricao" value="${"@(p.Descricao)"}" class="OrcamentoItens">`);
+            @:$("#form-crud").append(`<input type="hidden" data-id="${"@(p.Id)"}" name="OrcamentoItens[@i].ValorTotal" value="${"@((p.ValorUnitario * (decimal)p.Quantidade).ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US")))"}" class="OrcamentoItens">`);
+        }
+
+        ReorderItensRelacionados();
+
+        function ReorderItensRelacionados() {
+
+            var count = 0;
+            var elementNumber = 1;
+            var valorTotal = 0;
+
+            $.each($(".OrcamentoItens"), function (index) {
+
+                if (elementNumber > 6) {
+                    elementNumber = 1;
+                    count++;
+                }
+
+                switch (elementNumber) {
+                    case 1:
+                        $(this).attr('name', `OrcamentoItens[${count}].Id`);
+                        break;
+                    case 2:
+                        $(this).attr('name', `OrcamentoItens[${count}].ValorUnitario`);
+                        break;
+                    case 3:
+                        $(this).attr('name', `OrcamentoItens[${count}].Quantidade`);
+                        break;
+                    case 4:
+                        $(this).attr('name', `OrcamentoItens[${count}].ProdutoId`);
+                        break;
+                    case 5:
+                        $(this).attr('name', `OrcamentoItens[${count}].Descricao`);
+                        break;
+                    case 6: {
+                        valorTotal += parseFloat($(this).val().replace(",",""));
+                        $(this).attr('name', `OrcamentoItens[${count}].ValorTotal`);
+                        break;
+                    }
+                }
+
+                elementNumber++;
+            });
+
+            $("#lblValorTotal").text("R$ " + number_format(valorTotal.toFixed(2), 2, ',', '.'))
+        }
+
+        var erro = false;
+
+        $("#btnAdicionarOrcamentoItem").click(function () {
+
+            erro = false;
+
+            $("#divModalOrcamentoItem").next(".text-danger").remove();
+            $("#Quantidade").next(".invalid-feedback").remove();
+            $("#Quantidade").next(".invalid-feedback").remove();
+            $("#Quantidade").removeClass("is-invalid");
+
+            if ($("#Quantidade").val() == "") {
+                $("#Quantidade").addClass("is-invalid");
+                $("#Quantidade").after(
+                    `<div class="invalid-feedback">Campo obrigatório</div>`
+                );
+
+                erro = true;
+            }
+
+            if ($('input[name="chkSelect"]:checked').val() == undefined) {
+                $("#divModalOrcamentoItem").after(
+                    `<div class="text-danger text-sm mb-4">Campo obrigatório</div>`
+                );
+
+                erro = true;
+            }
+
+            if (!erro) {
+                $('input[name="chkSelect"]').each(function () {
+                    if ($(this).is(":checked"))
+                        if ($(`.rowId[data-id='${$(this).val()}']`).length <= 0) {
+
+                            var valorUnitario = convertToFloatNumber($(this).data("valorunitario").replace(".", "").replace(",", "."));
+                            var quantidade = convertToFloatNumber($("#Quantidade").val());
+
+                            $("#form-crud").append(`<input type="hidden" data-id="${$("#OrcamentoItemId").val()}" name="OrcamentoItens[].Id" value="${$("#OrcamentoItemId").val()}" class="OrcamentoItens">`);
+                            $("#form-crud").append(`<input type="hidden" data-id="${$("#OrcamentoItemId").val()}" name="OrcamentoItens[].ValorUnitario" value="${number_format(valorUnitario.toFixed(2), 2, ',', '.')}" class="OrcamentoItens">`);
+                            $("#form-crud").append(`<input type="hidden" data-id="${$("#OrcamentoItemId").val()}" name="OrcamentoItens[].Quantidade" value="${number_format(quantidade.toFixed(2), 2, ',', '.')}" class="OrcamentoItens">`);
+                            $("#form-crud").append(`<input type="hidden" data-id="${$("#OrcamentoItemId").val()}" name="OrcamentoItens[].ProdutoId" value="${$(this).data("id")}" class="OrcamentoItens">`);
+                            $("#form-crud").append(`<input type="hidden" data-id="${$("#OrcamentoItemId").val()}" name="OrcamentoItens[].Descricao" value="${$(this).data("descricao")}" class="OrcamentoItens">`);
+                            $("#form-crud").append(`<input type="hidden" data-id="${$("#OrcamentoItemId").val()}" name="OrcamentoItens[].ValorTotal" value="${(valorUnitario * quantidade).toFixed(2)}" class="OrcamentoItens">`);
+
+                            tableElement.row.add([
+                                $("#OrcamentoItemId").val(),
+                                $(this).data("descricao"),
+                                number_format(quantidade.toFixed(2), 2, ',', '.').replace(/\,00$/, ''),
+                                number_format(valorUnitario.toFixed(2), 2, ',', '.'),
+                                number_format((valorUnitario * quantidade).toFixed(2), 2, ',', '.')
+                            ]).draw(false);
+
+                            ReorderItensRelacionados();
+                        }
+                });
+
+                $("#addModalOrcamentoItem").modal("hide");
+            }
+        });
+
+        $("#addModalOrcamentoItem").on('show.bs.modal', function (e) {
+            $("#OrcamentoItemId").val(uuidv4());
+            $("#Quantidade").val("");
+
+        });
+
+        $("#addModalOrcamentoItem").on('shown.bs.modal', function (e) {
+            $("#Quantidade").focus();
+        });
+
+        $("#btnOpenModalOrcamentoItem").click(function () {
+            if (tableElement2 != null)
+                tableElement2.ajax.reload();
+        });
+    });
+</script>

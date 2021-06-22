@@ -1,0 +1,43 @@
+﻿@model Dictionary<Guid, string>
+
+<select id="@ViewBag.HtmlName" name="@ViewBag.HtmlName" class="form-control select2 inp-@ViewBag.HtmlName" @(ViewBag.IsRequired ? "required" : "")>
+
+    @if (ViewBag.HasFirstValue)
+    {
+        @if (ViewBag.Codigo == Guid.Empty)
+        {
+            <option selected="selected" value="">-- Selecione --</option>
+        }
+        else
+        {
+            <option value="">-- Selecione --</option>
+        }
+    }
+
+    @foreach (var i in Model)
+    {
+        if (i.Key == ViewBag.Codigo)
+        {
+            <option selected="selected" value="@i.Key">@i.Value</option>
+        }
+        else
+        {
+            <option value="@i.Key">@i.Value</option>
+        }
+    }
+</select>
+@if (ViewBag.IsSelect2)
+{
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/lib/select2/js/i18n/pt-BR.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#@ViewBag.HtmlName').select2({
+                language: 'pt-BR',
+                width: '100%'
+            });
+        });
+    </script>
+}

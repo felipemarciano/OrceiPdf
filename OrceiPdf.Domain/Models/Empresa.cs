@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace OrceiPdf.Domain.Models
 {
@@ -14,5 +15,6 @@ namespace OrceiPdf.Domain.Models
         public string Logo { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
+        public ICollection<Orcamento> Orcamentos { get; set; }
     }
 }

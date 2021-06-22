@@ -17,7 +17,7 @@ namespace OrceiPdf.Web.Controllers
         private readonly IClienteService _clienteService;
 
         public ClienteController(ILogger<ClienteController> logger, IClienteService clienteService)
-        {
+        { 
             _logger = logger;
             _clienteService = clienteService;
         }
@@ -75,6 +75,9 @@ namespace OrceiPdf.Web.Controllers
                 {
                     x.Id.ToString(),
                     x.NomeFantasia,
+                    x.RazaoSocial,
+                    x.Email,
+                    x.Celular
                 }).ToList()
             });
         }

@@ -5,29 +5,79 @@
 <h3>Registrar Usuário</h3>
 <div class="row">
     <div class="col-md-12">
-        <form method="post">
+        <form method="post" id="form-registrar" role="presentation">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserName"></label>
-                <input asp-for="UserName" class="form-control" />
+                <input asp-for="UserName" class="form-control"/>
+                <span class="text-muted">Ex.: Primeiro nome</span>
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" autocomplete="off"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" class="form-control" autocomplete="off"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
+                <ul class="text-muted">
+                    <li>
+                        Deve conter 8 caracteres
+                    </li>
+                    <li>
+                        1 número, 1 caractere minúsculo e 1 caractere maiúsculo
+                    </li>
+                    <li>
+                        E um caractere especial tipo @@#$%&
+                    </li>
+                </ul>
             </div>
             <div class="form-group">
                 <label asp-for="ConfirmPassword"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
+                <input asp-for="ConfirmPassword" class="form-control" autocomplete="off"/>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Registrar</button>
         </form>
     </div>
 </div>
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('form, input, select').attr('autocomplete', 'new-password');
+        $.validator.addMethod("lettersonly", function (value, element) {
+            return this.optional(element) || /^[a-z]+$/i.test(value);
+        }, "Somente letras");
+
+        $.validator.addMethod("checkPassword", function (value, element) {
+            if (value)
+                return /^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@@#$%&*-+]).*$/.test(value);
+            else
+                return true;
+        }, "Informe um formato válido");
+
+        $("#form-registrar").validate({
+            rules: {
+                UserName: {
+                    required: true,
+                    lettersonly: true
+                },
+                Email: {
+                    required: true,
+                    email: true,
+                },
+                Password: {
+                    required: true,
+                    checkPassword: true
+                },
+                ConfirmPassword: {
+                    required: true,
+                    checkPassword: true,
+                    equalTo: "#Password"
+                }
+            }
+        });
+    });
+</script>

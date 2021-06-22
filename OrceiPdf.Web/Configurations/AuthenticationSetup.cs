@@ -18,6 +18,7 @@ namespace OrceiPdf.Web.Configurations
 
             services.AddIdentity<User, Roles>()
                 .AddEntityFrameworkStores<OrceiPdfDbContext>()
+                .AddErrorDescriber<MultilanguageIdentityErrorDescriber>()
                 .AddDefaultTokenProviders();
         }
     }

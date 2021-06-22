@@ -19,11 +19,13 @@ namespace OrceiPdf.IoC
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IOrcamentoRepository, OrcamentoRepository>();
+            services.AddScoped<IOrcamentoItemRepository, OrcamentoItemRepository>();
 
             services.AddScoped<IEmpresaService, EmpresaService>();
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<IProdutoService, ProdutoService>();
             services.AddScoped<IOrcamentoService, OrcamentoService>();
+            services.AddScoped<IOrcamentoItemService, OrcamentoItemService>();
         }
     }
 }

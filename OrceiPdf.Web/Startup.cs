@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OrceiPdf.Web.Configurations;
 using System.Globalization;
+using Wkhtmltopdf.NetCore;
 
 namespace OrceiPdf.Web
 {
@@ -27,6 +28,8 @@ namespace OrceiPdf.Web
             services.AddControllersWithViews();
 
             services.AddLocalization();
+
+            services.AddWkhtmltopdf("wkhtmltopdf");
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -38,18 +41,17 @@ namespace OrceiPdf.Web
             app.UseRequestLocalization(new RequestLocalizationOptions {
                 DefaultRequestCulture = new RequestCulture(culture: "pt-BR", uiCulture: "pt-BR"),
                 SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures,
                 FallBackToParentCultures = false
             });
 
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("pt-BR");
 
 
-            if (env.IsDevelopment())
-            {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
+            else {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
@@ -61,8 +63,7 @@ namespace OrceiPdf.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
+            app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}").RequireAuthorization();

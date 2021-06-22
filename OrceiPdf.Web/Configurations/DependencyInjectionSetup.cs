@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OrceiPdf.IoC;
+using OrceiPdf.Web.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace OrceiPdf.Web.Configurations
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             NativeInjectorBootStrapper.RegisterServices(services);
+
+            services.AddScoped(typeof(RenderViewComponentService));
         }
     }
 }

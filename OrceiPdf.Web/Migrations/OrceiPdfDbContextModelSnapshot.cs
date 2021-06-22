@@ -218,6 +218,9 @@ namespace OrceiPdf.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ClienteId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -240,6 +243,8 @@ namespace OrceiPdf.Web.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
 
                     b.HasIndex("EmpresaId");
 
@@ -270,8 +275,8 @@ namespace OrceiPdf.Web.Migrations
                     b.Property<double>("Quantidade")
                         .HasColumnType("float");
 
-                    b.Property<double>("ValorUnitario")
-                        .HasColumnType("float");
+                    b.Property<decimal>("ValorUnitario")
+                        .HasColumnType("decimal(15,2)");
 
                     b.HasKey("Id");
 
@@ -472,7 +477,7 @@ namespace OrceiPdf.Web.Migrations
             modelBuilder.Entity("OrceiPdf.Domain.Models.Empresa", b =>
                 {
                     b.HasOne("OrceiPdf.Domain.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Empresas")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -482,11 +487,19 @@ namespace OrceiPdf.Web.Migrations
 
             modelBuilder.Entity("OrceiPdf.Domain.Models.Orcamento", b =>
                 {
+                    b.HasOne("OrceiPdf.Domain.Models.Cliente", "Cliente")
+                        .WithMany("Orcamentos")
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("OrceiPdf.Domain.Models.Empresa", "Empresa")
-                        .WithMany()
+                        .WithMany("Orcamentos")
                         .HasForeignKey("EmpresaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Cliente");
 
                     b.Navigation("Empresa");
                 });
@@ -496,11 +509,11 @@ namespace OrceiPdf.Web.Migrations
                     b.HasOne("OrceiPdf.Domain.Models.Orcamento", "Orcamento")
                         .WithMany("OrcamentoItens")
                         .HasForeignKey("OrcamentoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("OrceiPdf.Domain.Models.Produto", "Produto")
-                        .WithMany()
+                        .WithMany("OrcamentoItens")
                         .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -521,9 +534,29 @@ namespace OrceiPdf.Web.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("OrceiPdf.Domain.Models.Cliente", b =>
+                {
+                    b.Navigation("Orcamentos");
+                });
+
+            modelBuilder.Entity("OrceiPdf.Domain.Models.Empresa", b =>
+                {
+                    b.Navigation("Orcamentos");
+                });
+
             modelBuilder.Entity("OrceiPdf.Domain.Models.Orcamento", b =>
                 {
                     b.Navigation("OrcamentoItens");
+                });
+
+            modelBuilder.Entity("OrceiPdf.Domain.Models.Produto", b =>
+                {
+                    b.Navigation("OrcamentoItens");
+                });
+
+            modelBuilder.Entity("OrceiPdf.Domain.Models.User", b =>
+                {
+                    b.Navigation("Empresas");
                 });
 #pragma warning restore 612, 618
         }

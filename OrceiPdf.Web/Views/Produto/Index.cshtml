@@ -43,7 +43,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">R$</span>
                     </div>
-                    <input asp-for="ValorUnitario" class="form-control" />
+                    <input asp-for="ValorUnitario" class="form-control" value="@Model.ValorUnitario.ToString("N2")"/>
                     <span asp-validation-for="ValorUnitario" class="text-danger"></span>
                 </div>
             </div>
@@ -60,7 +60,7 @@
         </div>
         <div class="card-body">
             <!--begin: Datatable-->
-            <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                 <div class="row">
                     <div class="col-sm-12">
                         <table class="table table-bordered table-checkable dataTable no-footer dtr-inline" id="tbDados" role="grid" aria-describedby="kt_datatable_info">

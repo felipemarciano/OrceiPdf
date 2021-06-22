@@ -23,7 +23,7 @@ namespace OrceiPdf.Application.Services
         public async Task Add(TEntity entity)
         {
             entity.CreatedDate = DateTime.Now;
-            await _repository.Add(entity);
+            await _repository.Add(entity); 
             await _unitOfWork.CommitAsync();
         }
 

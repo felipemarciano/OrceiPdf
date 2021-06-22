@@ -14,10 +14,29 @@ namespace OrceiPdf.Repository.Repository
         {
         }
 
+        public async Task<Orcamento> GetbyUserId(Guid userId, Guid Id)
+        {
+            return await Context.Orcamentos.Include(x=> x.OrcamentoItens).ThenInclude(x => x.Produto)
+                .FirstOrDefaultAsync(x => x.Empresa.UserId == userId && x.Id == Id);
+        }
+
+        public async Task<Orcamento> GetbyIdAsNoTranking(Guid Id)
+        {
+            return await Context.Orcamentos.AsNoTracking().Include(x => x.OrcamentoItens).ThenInclude(x => x.Produto)
+                .FirstOrDefaultAsync(x => x.Id == Id);
+        }
+
+        public int GetLastNumber()
+        {
+            return Context.Orcamentos.Count() + 1;
+        }
+
         public async Task<GridResult<Orcamento>> ListarAsync(Guid empresaId, DataTableViewModel param)
         {
-            var query = Context.Orcamentos
-            .Where(x => x.EmpresaId == empresaId && EF.Functions.Like(x.Numero.ToString(), $"%{param.sSearch}%"));
+            var query = Context.Orcamentos.Include(x => x.Cliente)
+            .Where(x => x.EmpresaId == empresaId && 
+                (EF.Functions.Like(x.Numero.ToString(), $"%{param.sSearch}%") || EF.Functions.Like(x.Cliente.NomeFantasia, $"%{param.sSearch}%")
+                || EF.Functions.Like(x.Cliente.RazaoSocial, $"%{param.sSearch}%") || EF.Functions.Like(x.Cliente.Cnpj, $"%{param.sSearch}%")));
 
             var count = await query.CountAsync();
 

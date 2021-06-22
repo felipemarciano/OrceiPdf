@@ -75,7 +75,7 @@ namespace OrceiPdf.Web.Controllers
                 {
                     x.Id.ToString(),
                     x.Descricao,
-                    x.ValorUnitario.ToString()
+                    x.ValorUnitario.ToString("N2")
                 }).ToList()
             });
         }
