@@ -118,8 +118,9 @@ table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child:b
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     font-weight: bolder;
-    cursor:pointer;
+    cursor: pointer;
     content: "\f13a";
+    margin-right: 15px;
 }
 
 table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before {

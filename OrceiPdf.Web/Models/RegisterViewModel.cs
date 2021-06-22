@@ -5,7 +5,7 @@ namespace OrceiPdf.Web.Models
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Nome")]
+        [Display(Name = "Nome de usuário")]
         public string UserName { get; set; }
         [Required]
         [EmailAddress]
