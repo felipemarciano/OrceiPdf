@@ -39,6 +39,8 @@ namespace OrceiPdf.Application.Services
 
             if (orcamento.Numero == 0)
             {
+                orcamento.CreatedDate = DateTime.Now;
+                orcamento.ModifiedDate = DateTime.Now;
                 orcamento.Status = Domain.Enum.EOrcamentoStatus.Pendente;
                 orcamento.OrcamentoItens = listUpdate;
                 orcamento.Numero = _orcamentoRepository.GetLastNumber();
@@ -47,6 +49,7 @@ namespace OrceiPdf.Application.Services
             }
             else
             {
+                orcamento.ModifiedDate = DateTime.Now;
                 _orcamentoItemRepository.RemoveRange(orcamento.Id);
                 _orcamentoItemRepository.AddRange(listUpdate);
 

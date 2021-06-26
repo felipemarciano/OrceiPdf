@@ -99,7 +99,7 @@ namespace OrceiPdf.Web.Controllers
 
                     TempData["MessagemOk"] = "Ação realizada com sucesso.";
 
-                    return RedirectPermanent("orcamento?id=" + model.Id);
+                    return RedirectPermanent("orcamento/list");
                 }
                 catch (Exception ex) {
                     ModelState.AddModelError(string.Empty, ex.Message);
